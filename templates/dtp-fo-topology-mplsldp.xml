@@ -1,0 +1,44 @@
+<config xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+  <device>
+    <name>{$DEVICE-NAME}</name>
+      <config>
+        <?set-context-node {/network[name=$SERVICE-NAME]/topology[name=$TOPOLOGY-NAME]/function-objects/mplsldp[function-object-name=$FO-NAME]}?>
+        <?set ROUTER-ID-LOOPBACK-NAME = {router-id-loopback-name}?>
+
+        <mpls xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <ldp>
+            <router-id>{/network[name=$SERVICE-NAME]/topology[name=$TOPOLOGY-NAME]/link/side[node=$NODE-NAME and side-type/dtp-fo-link-side-logical:logical/port[port-type='Loopback' and port-name=$ROUTER-ID-LOOPBACK-NAME]]/function-objects/dtp-fo-link-side-loopback:loopback/ip-address}</router-id>
+            <address-family>
+              <ipv4>
+                <discovery>
+                  <targeted-hello>
+                    <accept>
+                    </accept>
+                  </targeted-hello>
+                </discovery>
+                <label>
+                  <local>
+                    <allocate>
+                      <for>host-routes</for>
+                    </allocate>
+                    <advertise>
+                      <disable/>
+                      <for>
+                        <acl>{disable-advertise-acl}</acl>
+                      </for>
+                    </advertise>
+                  </local>
+                </label>
+              </ipv4>
+            </address-family>
+            <interface>
+              <name>Loopback{$ROUTER-ID-LOOPBACK-NAME}</name>
+            </interface>
+          </ldp>
+        </mpls>
+
+      </config>
+    </device>
+  </devices>
+</config>

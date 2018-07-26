@@ -1,0 +1,22 @@
+<config xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+  <device>
+    <name>{$DEVICE-NAME}</name>
+      <config>
+        <?set-context-node {/network[name=$SERVICE-NAME]/topology[name=$TOPOLOGY-NAME]/link[name=$LINK-NAME]/side[node=$NODE-NAME and function-objects/mplsldp/function-object-name=$FO-NAME]}?>
+
+        <mpls xmlns="http://tail-f.com/ned/cisco-ios-xr">
+          <ldp>
+            <interface>
+              <name>{side-type/logical/port/port-type}{side-type/logical/port/port-name}</name>
+            </interface>
+            <interface>
+              <name>{side-type/physical/port/port-type}{side-type/physical/port/port-name}</name>
+            </interface>
+          </ldp>
+        </mpls>
+
+      </config>
+    </device>
+  </devices>
+</config>
